@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function RegisterPage() {
-  const [selectedProfile, setSelectedProfile] = useState("familiar");
+  const [selectedProfile, setSelectedProfile] = useState(1);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [form, setForm] = useState({
@@ -14,9 +14,9 @@ export default function RegisterPage() {
   });
 
   const profiles = [
-    { id: "familiar", label: "Familiar", icon: "family_restroom" },
-    { id: "cuidador", label: "Cuidador", icon: "medical_services" },
-    { id: "idoso", label: "Idoso", icon: "elderly" },
+    { id: 1, label: "Familiar", icon: "family_restroom" },
+    { id: 2, label: "Cuidador", icon: "medical_services" },
+    { id: 3, label: "Idoso", icon: "elderly" },
   ];
 
   const handleChange = (e) => {
@@ -30,7 +30,6 @@ export default function RegisterPage() {
 
   return (
     <div className="bg-surface dark:bg-[#191c1b] text-on-surface dark:text-[#e1e3e0] min-h-screen flex flex-col transition-colors duration-300">
-
       {/* Header */}
       <header className="bg-white/80 dark:bg-[#2e312f]/80 backdrop-blur-xl top-0 z-50 shadow-[0_8px_32px_rgba(0,79,81,0.05)] border-b border-surface-container-low dark:border-[#3e4949] transition-colors duration-300">
         <div className="flex flex-col items-center justify-center w-full px-6 py-8 max-w-7xl mx-auto text-center">
@@ -46,22 +45,20 @@ export default function RegisterPage() {
       {/* Main */}
       <main className="flex-grow flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-xl">
-
           {/* Card */}
           <div className="bg-surface-container-lowest dark:bg-[#2e312f] rounded-3xl p-8 md:p-12 shadow-[0_24px_48px_rgba(0,79,81,0.08)] border border-outline-variant/10 dark:border-[#3e4949] transition-colors duration-300">
-
             {/* Título */}
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-primary dark:text-[#8ed2d4] mb-3 transition-colors duration-300">
                 Criar nova conta
               </h2>
               <p className="text-secondary dark:text-[#b4cbcb] text-lg leading-relaxed transition-colors duration-300">
-                Junte-se à nossa comunidade para oferecer o melhor cuidado e dignidade para quem você ama.
+                Junte-se à nossa comunidade para oferecer o melhor cuidado e
+                dignidade para quem você ama.
               </p>
             </div>
 
             <form className="space-y-8" onSubmit={handleSubmit}>
-
               {/* Seletor de Perfil */}
               <div className="space-y-3">
                 <label className="text-sm font-semibold text-primary dark:text-[#8ed2d4] block px-1 transition-colors duration-300">
@@ -79,7 +76,9 @@ export default function RegisterPage() {
                           : "border-outline-variant dark:border-[#3e4949] bg-transparent text-secondary dark:text-[#b4cbcb] hover:border-primary/50 dark:hover:border-[#8ed2d4]/50 hover:text-primary dark:hover:text-[#8ed2d4]"
                       }`}
                     >
-                      <span className="material-symbols-outlined text-lg">{profile.icon}</span>
+                      <span className="material-symbols-outlined text-lg">
+                        {profile.icon}
+                      </span>
                       {profile.label}
                     </button>
                   ))}
@@ -88,10 +87,12 @@ export default function RegisterPage() {
 
               {/* Campos */}
               <div className="space-y-5">
-
                 {/* Nome */}
                 <div className="group">
-                  <label className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]" htmlFor="name">
+                  <label
+                    className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]"
+                    htmlFor="name"
+                  >
                     Nome completo
                   </label>
                   <div className="relative">
@@ -112,7 +113,10 @@ export default function RegisterPage() {
 
                 {/* E-mail */}
                 <div className="group">
-                  <label className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]" htmlFor="email">
+                  <label
+                    className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]"
+                    htmlFor="email"
+                  >
                     E-mail
                   </label>
                   <div className="relative">
@@ -131,12 +135,12 @@ export default function RegisterPage() {
                   </div>
                 </div>
 
-                {/* Senha + Confirmar */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
-                  {/* Senha */}
                   <div className="group">
-                    <label className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]" htmlFor="password">
+                    <label
+                      className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]"
+                      htmlFor="password"
+                    >
                       Senha
                     </label>
                     <div className="relative">
@@ -156,7 +160,9 @@ export default function RegisterPage() {
                         type="button"
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-outline dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors"
                         onClick={() => setShowPassword((prev) => !prev)}
-                        aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                        aria-label={
+                          showPassword ? "Ocultar senha" : "Mostrar senha"
+                        }
                       >
                         <span className="material-symbols-outlined">
                           {showPassword ? "visibility_off" : "visibility"}
@@ -167,7 +173,10 @@ export default function RegisterPage() {
 
                   {/* Confirmar Senha */}
                   <div className="group">
-                    <label className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]" htmlFor="confirmPassword">
+                    <label
+                      className="block text-sm font-semibold text-secondary dark:text-[#b4cbcb] mb-1.5 ml-1 transition-colors group-focus-within:text-primary dark:group-focus-within:text-[#8ed2d4]"
+                      htmlFor="confirmPassword"
+                    >
                       Confirmar Senha
                     </label>
                     <div className="relative">
@@ -187,10 +196,16 @@ export default function RegisterPage() {
                         type="button"
                         className="absolute right-4 top-1/2 -translate-y-1/2 text-outline dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors"
                         onClick={() => setShowConfirmPassword((prev) => !prev)}
-                        aria-label={showConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                        aria-label={
+                          showConfirmPassword
+                            ? "Ocultar senha"
+                            : "Mostrar senha"
+                        }
                       >
                         <span className="material-symbols-outlined">
-                          {showConfirmPassword ? "visibility_off" : "visibility"}
+                          {showConfirmPassword
+                            ? "visibility_off"
+                            : "visibility"}
                         </span>
                       </button>
                     </div>
@@ -200,8 +215,13 @@ export default function RegisterPage() {
                 {/* Código de ambiente */}
                 <div className="pt-2">
                   <div className="group p-5 rounded-2xl bg-tertiary-container/5 dark:bg-[#515b8e]/10 border border-tertiary/10 dark:border-[#515b8e]/20 transition-colors duration-300">
-                    <label className="block text-sm font-semibold text-tertiary dark:text-[#bac3fd] mb-2 flex items-center gap-2 transition-colors duration-300" htmlFor="code">
-                      <span className="material-symbols-outlined text-lg">key</span>
+                    <label
+                      className="block text-sm font-semibold text-tertiary dark:text-[#bac3fd] mb-2 flex items-center gap-2 transition-colors duration-300"
+                      htmlFor="code"
+                    >
+                      <span className="material-symbols-outlined text-lg">
+                        key
+                      </span>
                       Código de ambiente do responsável
                     </label>
                     <input
@@ -213,7 +233,8 @@ export default function RegisterPage() {
                       onChange={handleChange}
                     />
                     <p className="mt-2 text-xs text-secondary dark:text-[#8ea0a0] px-1 transition-colors duration-300">
-                      Este código é fornecido pelo administrador da rede familiar.
+                      Este código é fornecido pelo administrador da rede
+                      familiar.
                     </p>
                   </div>
                 </div>
@@ -259,9 +280,24 @@ export default function RegisterPage() {
             © 2024 Vita Auxilium. O Cuidado com Dignidade.
           </div>
           <div className="flex gap-8">
-            <a className="text-neutral-500 dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors" href="#">Privacidade</a>
-            <a className="text-neutral-500 dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors" href="#">Termos de Uso</a>
-            <a className="text-neutral-500 dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors" href="#">Suporte</a>
+            <a
+              className="text-neutral-500 dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors"
+              href="#"
+            >
+              Privacidade
+            </a>
+            <a
+              className="text-neutral-500 dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors"
+              href="#"
+            >
+              Termos de Uso
+            </a>
+            <a
+              className="text-neutral-500 dark:text-[#8ea0a0] hover:text-primary dark:hover:text-[#8ed2d4] transition-colors"
+              href="#"
+            >
+              Suporte
+            </a>
           </div>
         </div>
       </footer>

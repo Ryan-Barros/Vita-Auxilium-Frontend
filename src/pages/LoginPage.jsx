@@ -62,7 +62,12 @@ export default function LoginPage() {
               <img
                 alt="Casal de idosos sorrindo"
                 className="w-full h-full object-cover grayscale mix-blend-overlay"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIM088-nTjFDW8TxqvgWfGoyxYk3YJ8uDbauR4Q4jvDmesU2iSuHkYc1hnWwz2nvSMmgrn5YMOiaGr7b99bfBIYN8veaV6A1qd6c61aTl5Q6Obb8x8doMHACzHXeIB-5sAx-W1nlZvSTW0oLLrnXQ3juXueeTqMhVrojWhgB8IvK7MbjRvgRRLq-OhByhHYErKXiFuniL7L6YRA9Ib-EfhzAOzi3A34O7Hejpo_BdsH1vTEt_lD62HK9GxtEOH0RfCI3xC2MUGsg"
+                src={
+                  new URL(
+                    "../assets/images/elderly-couple.webp",
+                    import.meta.url,
+                  ).href
+                }
               />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-primary dark:from-[#003738] via-transparent to-transparent z-[15]" />

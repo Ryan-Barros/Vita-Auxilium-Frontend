@@ -1,23 +1,22 @@
 import { create } from "zustand";
-import { jwtDecode } from "jwt-decode";
+import api from "../services/api";
 
 export const useAuthStore = create((set) => ({
-  token: localStorage.getItem("token"),
-  user: (() => {
-    const t = localStorage.getItem("token");
-    return t ? jwtDecode(t) : null;
-  })(),
+  user: null,
+  status: 'idle',
 
-  setToken: (token) => {
-    if (!token) return;
-    localStorage.setItem("token", token);
-    set({ token, user: jwtDecode(token) });
+  fetchUser: async () => {
+    set({ status: 'loading' });
+    try {
+      const res = await api.get("/auth/me");
+      set({ user: res.data, status: 'authenticated' });
+    } catch {
+      set({ user: null, status: 'unauthenticated' });
+    }
   },
 
-  logout: () => {
-    localStorage.removeItem("token");
-    set({ token: null, user: null });
+  logout: async () => {
+    await api.post("/auth/logout");
+    set({ user: null, status: 'unauthenticated' });
   },
-
-  isAuthenticated: () => !!localStorage.getItem("token"),
 }));

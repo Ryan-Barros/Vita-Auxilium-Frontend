@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../services/authService";
-import Toast from "../components/Toast";
+import { useToastStore } from "../stores/toastStore";
 import { useAuthStore } from "../stores/authStore";
 
 export default function LoginPage() {
@@ -9,27 +9,34 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isDark, setIsDark] = useState(false);
-  const [toast, setToast] = useState(null);
   const navigate = useNavigate();
-  const { setToken } = useAuthStore();
 
   const toggleTheme = (dark) => {
     setIsDark(dark);
     document.documentElement.classList.toggle("dark", dark);
   };
 
+  const { user, status } = useAuthStore();
+
+  useEffect(() => {
+    if (status === "authenticated" && user) {
+      useToastStore.getState().showToast("Bem vindo de volta!", "success");
+      navigate("/home", { replace: true });
+    }
+  }, [status, user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await login(email, password);
-      setToken(res.data.token);
-      navigate("/");
+      await login(email, password);
+      await useAuthStore.getState().fetchUser();
+      useToastStore.getState().showToast("Login realizado com sucesso!", "success");
+      navigate("/home");
     } catch (err) {
-      console.log(err);
-      setToast({
-        message: err?.response?.data?.message || "Email ou senha inválidos!",
-        type: "error",
-      });
+      useToastStore.getState().showToast(
+        err?.response?.data?.detail || "Email ou senha inválidos!",
+        "error"
+      );
     }
   };
 
@@ -116,12 +123,6 @@ export default function LoginPage() {
                     >
                       Senha
                     </label>
-                    <a
-                      className="text-primary dark:text-[#8ed2d4] font-semibold text-lg hover:underline transition-all"
-                      href="#"
-                    >
-                      Esqueci minha senha
-                    </a>
                   </div>
                   <div className="relative">
                     <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline dark:text-[#8ea0a0]">
@@ -149,6 +150,12 @@ export default function LoginPage() {
                       </span>
                     </button>
                   </div>
+                  <a
+                    className="text-primary relative dark:text-[#8ed2d4] font-semibold text-lg hover:underline transition-all"
+                    href="#"
+                  >
+                    Esqueci minha senha
+                  </a>
                 </div>
 
                 <button
@@ -193,29 +200,26 @@ export default function LoginPage() {
         <div className="fixed top-8 right-8 hidden md:flex items-center gap-4 bg-white/20 dark:bg-black/20 backdrop-blur-md p-2 rounded-full border border-white/30 dark:border-white/10 transition-colors duration-300">
           <button
             onClick={() => toggleTheme(false)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-              !isDark
-                ? "bg-white text-primary shadow-sm"
-                : "text-[#8ea0a0] hover:bg-white/10"
-            }`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${!isDark
+              ? "bg-white text-primary shadow-sm"
+              : "text-[#8ea0a0] hover:bg-white/10"
+              }`}
             aria-label="Tema claro"
           >
             <span className="material-symbols-outlined">light_mode</span>
           </button>
           <button
             onClick={() => toggleTheme(true)}
-            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
-              isDark
-                ? "bg-on-surface-variant text-[#8ed2d4] shadow-sm"
-                : "text-on-surface-variant hover:bg-white/10"
-            }`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isDark
+              ? "bg-on-surface-variant text-[#8ed2d4] shadow-sm"
+              : "text-on-surface-variant hover:bg-white/10"
+              }`}
             aria-label="Tema escuro"
           >
             <span className="material-symbols-outlined">dark_mode</span>
           </button>
         </div>
       </div>
-      {toast && <Toast {...toast} onClose={() => setToast(null)} />}
     </>
   );
 }

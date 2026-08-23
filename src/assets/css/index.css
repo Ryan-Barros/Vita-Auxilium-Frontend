@@ -67,6 +67,10 @@
     --radius-full: 9999px;
 
     --animate-slide-in: slide-in 0.3s ease-out;
+
+    --spacing-touch-target-min: 48px;
+    --spacing-gutter: 24px;
+    --spacing-margin-mobile: 20px;
 }
 
 @keyframes slide-in {

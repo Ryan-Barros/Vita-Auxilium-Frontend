@@ -62,7 +62,7 @@ export default function RegisterPage() {
     if (code.trim() === "") {
       let data = { ...form, profile: selectedProfile };
       try {
-        const res = await register(data);
+        await register(data);
         navigate("/auth/login");
       } catch (err) {
         console.error(err);
@@ -71,7 +71,7 @@ export default function RegisterPage() {
     } else {
       let data = { ...form, profile: selectedProfile, code: code.trim().toUpperCase() };
       try {
-        const res = await register(data);
+        await register(data);
         navigate("/auth/login");
       } catch (err) {
         console.error(err);

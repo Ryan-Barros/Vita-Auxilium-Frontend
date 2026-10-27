@@ -1,17 +1,22 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuthStore } from "../stores/authStore";
+import { useEnvironmentStore } from "../stores/environmentStore";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import GoogleCompleteProfilePage from "../pages/GoogleCompleteProfilePage";
+import OAuthCallbackPage from "../pages/OAuthCallbackPage";
 import SidebarLayout from "../components/SidebarLayout";
 import HomePage from "../pages/shared/HomePage";
 import EnvironmentPage from "../pages/shared/EnvironmentPage";
-import ElderlyEnvironmentPage from "../pages/Elderly/ElderlyEnvironmentPage";
-import CaregiverEnvironmentPage from "../pages/Caregiver/CaregiverEnvironmentPage";
-import FamilyEnvironmentsPage from "../pages/Family/FamilyEnvironmentsPage";
+import ActivitiesPage from "../pages/shared/ActivitiesPage";
+import ReminderPager from "../pages/shared/ReminderPager";
+import ProfileConfigPage from "../pages/shared/ProfileConfigPage";
+import ConfigPage from "../pages/shared/ConfigPage";
+import MonitoringPage from "../pages/Family/MonitoringPage";
 import { useEffect } from "react";
 
 function PrivateRoute({ children }) {
-  const { status } = useAuthStore();
+  const { user, status } = useAuthStore();
 
   if (status === "idle" || status === "loading") {
     return (
@@ -19,6 +24,24 @@ function PrivateRoute({ children }) {
         Carregando Vita Auxilium...
       </div>
     );
+  }
+
+  if (status === "unauthenticated") {
+    return <Navigate to="/auth/login" replace />;
+  }
+
+  if (user && (user.profilePending || user.needsProfile)) {
+    return <Navigate to="/auth/google-setup" replace />;
+  }
+
+  return children;
+}
+
+function EnvironmentRoute({ children }) {
+  const { currentEnvironment } = useEnvironmentStore();
+
+  if (!currentEnvironment) {
+    return <Navigate to="/environments" replace />;
   }
 
   return children;
@@ -35,6 +58,9 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/auth/login" element={<LoginPage />} />
       <Route path="/auth/register" element={<RegisterPage />} />
+      <Route path="/auth/google-setup" element={<GoogleCompleteProfilePage />} />
+      <Route path="/auth/complete-profile" element={<GoogleCompleteProfilePage />} />
+      <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
       <Route path="/" element={<Navigate to="/auth/login" replace />} />
 
       <Route
@@ -45,10 +71,33 @@ export default function AppRoutes() {
         }
       >
         <Route path="/home" element={<HomePage />} />
+        <Route
+          path="/monitoring"
+          element={
+            <EnvironmentRoute>
+              <MonitoringPage />
+            </EnvironmentRoute>
+          }
+        />
         <Route path="/environments" element={<EnvironmentPage />} />
-        {/* <Route path="/environment/elderly" element={<ElderlyEnvironmentPage />} />
-        <Route path="/environment/caregiver" element={<CaregiverEnvironmentPage />} />
-        <Route path="/environment/family" element={<FamilyEnvironmentsPage />} /> */}
+        <Route
+          path="/activities"
+          element={
+            <EnvironmentRoute>
+              <ActivitiesPage />
+            </EnvironmentRoute>
+          }
+        />
+        <Route
+          path="/reminders"
+          element={
+            <EnvironmentRoute>
+              <ReminderPager />
+            </EnvironmentRoute>
+          }
+        />
+        <Route path="/configuration" element={<ConfigPage />} />
+        <Route path="/profile" element={<ProfileConfigPage />} />
       </Route>
     </Routes>
   );

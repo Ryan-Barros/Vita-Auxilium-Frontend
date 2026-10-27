@@ -1,11 +1,21 @@
 export default function CaregiverHeaderCard({
-  caregiverName = "Ana",
-  elderName = "Sra. Helena",
-  dateText = "12 de Outubro",
-  completedCount = 8,
-  totalCount = 12,
+  caregiverName,
+  elderName,
+  dateText,
+  completedCount = 0,
+  totalCount = 0,
 }) {
-  const percentage = Math.round((completedCount / totalCount) * 100);
+  const formattedDate =
+    dateText ||
+    new Date().toLocaleDateString("pt-BR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+
+  const percentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+  const displayName = caregiverName || "Cuidador(a)";
+  const targetName = elderName || "seu idoso assistido";
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -13,17 +23,17 @@ export default function CaregiverHeaderCard({
       <div className="lg:col-span-2 bg-[#eef2ee] dark:bg-[#252a29] p-8 md:p-10 rounded-[2.5rem] flex flex-col justify-between shadow-xs">
         <div>
           <h1 className="text-3xl md:text-4xl font-extrabold text-[#0d5c5a] dark:text-[#8ed2d4] tracking-tight mb-3">
-            Bom dia, {caregiverName}
+            Bom dia, {displayName}
           </h1>
           <p className="text-secondary dark:text-[#b4cbcb] text-base md:text-lg font-light leading-relaxed max-w-xl">
-            Hoje é um novo dia para cuidar com excelência e empatia. Aqui está o que temos para a {elderName}.
+            Hoje é um novo dia para cuidar com excelência e empatia. Aqui está o acompanhamento para {targetName}.
           </p>
         </div>
 
         <div className="mt-8 self-start">
           <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-[#343a39] text-[#0d5c5a] dark:text-[#8ed2d4] font-bold text-sm rounded-full shadow-xs">
             <span className="material-symbols-outlined text-lg">calendar_today</span>
-            <span>{dateText}</span>
+            <span>{formattedDate}</span>
           </span>
         </div>
       </div>
@@ -54,7 +64,9 @@ export default function CaregiverHeaderCard({
             />
           </div>
           <span className="text-xs text-slate-200 mt-2 block font-medium">
-            {percentage}% das atividades concluídas
+            {totalCount === 0
+              ? "Não há atividades agendadas para hoje"
+              : `${percentage}% das atividades concluídas`}
           </span>
         </div>
       </div>

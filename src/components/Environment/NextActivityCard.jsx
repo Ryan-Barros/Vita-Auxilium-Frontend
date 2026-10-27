@@ -3,13 +3,23 @@ import { useState } from "react";
 export default function NextActivityCard({ activity, onToggle, showConcludeButton = true }) {
   const [completed, setCompleted] = useState(activity?.completed || false);
 
-  const defaultActivity = {
-    time: "14:00",
-    title: "Tomar Remédio",
-    details: "Aspirina (500mg) - Com água",
-  };
-
-  const currentActivity = activity || defaultActivity;
+  if (!activity) {
+    return (
+      <div className="bg-white dark:bg-[#282d2c] p-8 md:p-10 rounded-[2.5rem] border border-outline-variant/30 shadow-sm flex flex-col justify-center items-start gap-4 h-full">
+        <span className="inline-block bg-[#0d5c5a]/10 text-[#0d5c5a] dark:text-[#8ed2d4] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+          Próxima atividade
+        </span>
+        <div>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-on-surface dark:text-[#e1e3e0]">
+            Não há nenhuma atividade próxima agendada
+          </h2>
+          <p className="text-secondary dark:text-[#b4cbcb] text-base font-light mt-1">
+            Tudo em dia com a sua rotina no momento.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const handleToggle = () => {
     const nextState = !completed;
@@ -30,11 +40,13 @@ export default function NextActivityCard({ activity, onToggle, showConcludeButto
               completed ? "line-through opacity-60" : ""
             }`}
           >
-            {currentActivity.time} - {currentActivity.title}
+            {activity.time} - {activity.title}
           </h2>
-          <p className="text-secondary dark:text-[#b4cbcb] text-lg md:text-xl font-medium mt-2">
-            {currentActivity.details}
-          </p>
+          {activity.details && (
+            <p className="text-secondary dark:text-[#b4cbcb] text-lg md:text-xl font-medium mt-2">
+              {activity.details}
+            </p>
+          )}
         </div>
       </div>
 
